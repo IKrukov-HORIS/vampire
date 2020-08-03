@@ -860,11 +860,13 @@ void Options::Options::init()
     " 4     - ColoredFirst, NoPositiveEquality, LeastTopLevelVariables,\n          LeastVariables, MaximalSize then Lexigraphical\n"
     " 10    - ColoredFirst, NegativeEquality, MaximalSize, Negative then Lexigraphical\n"
     " 11    - Lookahead\n"
+    " 666   - Random\n"
     " 1002  - Incomplete version of 2\n"
     " 1003  - Incomplete version of 3\n"
     " 1004  - Incomplete version of 4\n"
     " 1010  - Incomplete version of 10\n"
     " 1011  - Incomplete version of 11\n"
+    " 1666  - Incomplete version of 666\n"
     "Or negated, which means that reversePolarity is true i.e. for selection we treat all negative non-equalty literals as "
     "positive and vice versa (can only apply to non-equality literals).\n";
 
@@ -2633,11 +2635,14 @@ bool Options::SelectionOptionValue::setValue(const vstring& value)
   case 34:
   case 35:
 
+  case 666:
+
   case 1002:
   case 1003:
   case 1004:
   case 1010:
   case 1011:
+  case 1666:
   case -1:
   case -2:
   case -3:
@@ -2653,6 +2658,8 @@ bool Options::SelectionOptionValue::setValue(const vstring& value)
   case -33:
   case -34:
   case -35:
+
+  case -666:
 
   case -1002:
   case -1003:
@@ -3128,7 +3135,7 @@ bool Options::complete(const Problem& prb) const
   bool hasEquality = (prop.equalityAtoms() != 0);
 
   if (!unitEquality) {
-    if (_selection.actualValue <= -100 || _selection.actualValue >= 100) return false;
+    if (_selection.actualValue <= -1000 || _selection.actualValue >= 1000) return false;
     if (_literalComparisonMode.actualValue == LiteralComparisonMode::REVERSE) return false;
   }
 
@@ -3169,7 +3176,7 @@ bool Options::completeForNNE() const
   // run-time rule causing incompleteness
   if (_forwardLiteralRewriting.actualValue) return false;
   
-  if (_selection.actualValue <= -100 || _selection.actualValue >= 100) return false;
+  if (_selection.actualValue <= -1000 || _selection.actualValue >= 1000) return false;
 
   return _binaryResolution.actualValue;
 } // Options::completeForNNE
